@@ -309,73 +309,7 @@ function renderNew(){
       <label>الإجراء الإسعافي<select id="intervention"><option>تقييم أولي</option><option>تبريد/كمادات</option><option>سوائل فموية</option><option>أكسجين</option><option>إيقاف نزيف</option><option>تضميد</option><option>CPR</option><option>قياس سكر</option><option>أخرى</option></select></label>
       <label>النقل أو التسليم<select id="handover"><option>علاج بالموقع</option><option>تسليم للهلال الأحمر</option><option>نقل بواسطة الهلال الأحمر</option><option>نقل لمركز صحي/طبي</option><option>رفض النقل</option><option>تسليم لجهة تنظيمية</option></select></label>
     </div>
-    <label style="display:block;margin-top:14px">وصف الحالة<textarea id="notes" placeholder="اكتب وصفًا مختصرًا بدون بيانات شخصية غير لازمة"></textarea></label>
-
-    <div class="card" style="margin-top:16px">
-      <div style="display:flex;align-items:flex-start;gap:12px;justify-content:space-between">
-        <div>
-          <h3 style="margin:0">بيانات المستفيد رقم 1</h3>
-          <p class="small">لا يتم إدخال الاسم أو رقم الجواز أو الهوية إلا عند الحاجة النظامية.</p>
-        </div>
-        <span class="badge red">1</span>
-      </div>
-      <div class="grid formgrid" style="margin-top:14px">
-        <label>صفة المستفيد
-          <select id="beneficiaryType">
-            <option>حاج</option>
-            <option>معتمر</option>
-            <option>زائر</option>
-            <option>عامل/منظم</option>
-            <option>غير معروف</option>
-          </select>
-        </label>
-        <label>الجنس
-          <select id="beneficiaryGender">
-            <option>غير محدد</option>
-            <option>ذكر</option>
-            <option>أنثى</option>
-          </select>
-        </label>
-        <label>الجنسية
-          <input id="beneficiaryNationality" placeholder="مثال: إندونيسي">
-        </label>
-        <label>العمر التقريبي
-          <input id="beneficiaryAge" placeholder="مثال: 35">
-        </label>
-        <label>اللغة
-          <input id="beneficiaryLanguage" placeholder="مثال: عربي / إنجليزي / أردو">
-        </label>
-        <label>مستوى الوعي
-          <select id="beneficiaryConsciousness">
-            <option>واعي</option>
-            <option>يستجيب للصوت</option>
-            <option>يستجيب للألم</option>
-            <option>فاقد الوعي</option>
-          </select>
-        </label>
-        <label>تصنيف الحالة
-          <select id="beneficiaryTriage">
-            <option>بسيط</option>
-            <option>متوسط</option>
-            <option>حرج</option>
-            <option>وفاة</option>
-          </select>
-        </label>
-        <label>النبض
-          <input id="beneficiaryPulse" placeholder="نبضة/دقيقة">
-        </label>
-        <label>الضغط
-          <input id="beneficiaryBP" placeholder="120/80">
-        </label>
-        <label>نسبة الأكسجين
-          <input id="beneficiarySpo2" placeholder="% SpO2">
-        </label>
-        <label>السكر
-          <input id="beneficiaryGlucose" placeholder="mg/dL">
-        </label>
-      </div>
-    </div>
-
+    <label style="display:block;margin-top:14px">ملاحظات مختصرة<textarea id="notes" placeholder="اكتب وصفًا مختصرًا بدون بيانات شخصية غير لازمة"></textarea></label>
     <div class="actions">
       <button class="outline" onclick="saveIncident('مسودة')">حفظ كمسودة</button>
       <button class="primary" onclick="saveIncident('قيد المراجعة')">إرسال للمراجعة</button>
@@ -417,20 +351,7 @@ function saveIncident(status){
     createdBy:currentUser.name,
     team:currentUser.team,
     time:document.getElementById("time").value || new Date().toLocaleTimeString("ar-SA",{hour:"2-digit",minute:"2-digit"}),
-    notes:document.getElementById("notes").value.trim(),
-    beneficiary:{
-      type:document.getElementById("beneficiaryType")?.value || "",
-      gender:document.getElementById("beneficiaryGender")?.value || "",
-      nationality:document.getElementById("beneficiaryNationality")?.value.trim() || "",
-      age:document.getElementById("beneficiaryAge")?.value.trim() || "",
-      language:document.getElementById("beneficiaryLanguage")?.value.trim() || "",
-      consciousness:document.getElementById("beneficiaryConsciousness")?.value || "",
-      triage:document.getElementById("beneficiaryTriage")?.value || "",
-      pulse:document.getElementById("beneficiaryPulse")?.value.trim() || "",
-      bp:document.getElementById("beneficiaryBP")?.value.trim() || "",
-      spo2:document.getElementById("beneficiarySpo2")?.value.trim() || "",
-      glucose:document.getElementById("beneficiaryGlucose")?.value.trim() || ""
-    }
+    notes:document.getElementById("notes").value.trim()
   });
   addAudit("حفظ مباشرة", "تم حفظ المباشرة رقم " + id + " بحالة: " + status);
   save();
@@ -474,7 +395,7 @@ function renderIncidentsFiltered(){
         <td>${i.id}<br><span class="small">${i.time}</span></td>
         <td>${i.source}<br><span class="small">${i.rc || "لا يوجد رقم هلال"}</span></td>
         <td>${i.city}</td>
-        <td>${i.type}<br><span class="small">${i.patientCount} حالة</span><br><span class="small">${i.beneficiary ? (i.beneficiary.type + " - " + i.beneficiary.gender + " - " + (i.beneficiary.triage || "")) : ""}</span></td>
+        <td>${i.type}<br><span class="small">${i.patientCount} حالة</span></td>
         <td>${i.location}</td>
         <td>${i.team}<br><span class="small">${i.createdBy}</span></td>
         <td>${badge(i.status)}</td>
