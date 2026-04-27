@@ -1,386 +1,100 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>جمعية إنجاد للبحث والإنقاذ - بوابة مباشرة الحالات الإسعافية</title>
-  <style>
-    :root{--red:#dc2626;--dark:#07111f;--muted:#64748b;--bg:#f6f9fc;--line:#e2e8f0;--green:#16a34a;--orange:#f59e0b;--blue:#2563eb}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,Tahoma,sans-serif;background:var(--bg);color:#0f172a}
-    button,input,select,textarea{font-family:inherit}
-    .login{min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
-    .hero{background:linear-gradient(135deg,#7f1d1d,#111827,#020617);color:white;padding:56px;display:flex;flex-direction:column;justify-content:space-between}
-    .hero h1{font-size:38px;line-height:1.4;margin:0}
-    .loginbox{display:flex;align-items:center;justify-content:center;padding:24px}
-    .card{background:white;border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 10px 30px rgba(15,23,42,.05)}
-    label{font-size:14px;font-weight:700;color:#334155;display:block}
-    input,select,textarea{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:8px;font-size:14px;background:white}
-    textarea{min-height:90px;resize:vertical}
-    button{border:0;border-radius:14px;padding:12px 16px;font-weight:700;cursor:pointer}
-    .primary{background:var(--red);color:white}.outline{background:white;border:1px solid var(--line);color:#334155}.success{background:#dcfce7;color:#166534}.danger{background:#fee2e2;color:#991b1b}
-    .layout{display:none;min-height:100vh}.layout.on{display:flex}
-    aside{width:300px;background:white;border-left:1px solid var(--line);padding:18px;position:sticky;top:0;height:100vh}
-    main{flex:1;min-width:0}
-    header{background:rgba(246,249,252,.95);border-bottom:1px solid var(--line);padding:18px 28px;position:sticky;top:0;z-index:2}
-    .headerrow{display:flex;justify-content:space-between;align-items:center;gap:12px}
-    .content{padding:28px}
-    .brand{background:#020617;color:white;border-radius:24px;padding:18px;margin-bottom:18px;text-align:center}
-    .brand img,.hero img{width:126px;height:126px;border-radius:50%;object-fit:cover;background:white;display:block;margin:0 auto 14px}
-    .brand h3{margin:0 0 8px}.brand p{margin:0;color:#cbd5e1;font-size:12px}
-    .userbox{background:#f8fafc;border:1px solid var(--line);border-radius:22px;padding:14px;margin-bottom:18px}
-    .userbox p{margin:4px 0;font-size:13px;color:#64748b}
-    .nav button{display:block;width:100%;text-align:right;margin-bottom:8px;background:white;color:#475569}
-    .nav button.active,.nav button:hover{background:#fee2e2;color:#b91c1c}
-    .grid{display:grid;gap:16px}.stats{grid-template-columns:repeat(4,1fr)}.two{grid-template-columns:2fr 1fr}.formgrid{grid-template-columns:repeat(4,1fr)}
-    .page{display:none}.page.active{display:block}
-    .stat .num{font-size:32px;font-weight:900;margin:8px 0}
-    .small{font-size:12px;color:#64748b}.alert{padding:12px 14px;border-radius:16px;margin:12px 0;font-size:14px}.ok{background:#dcfce7;color:#166534}.warn{background:#fef3c7;color:#92400e}
-    table{width:100%;border-collapse:collapse;background:white;border-radius:18px;overflow:hidden}
-    th,td{padding:13px;border-bottom:1px solid #f1f5f9;text-align:right;font-size:14px;vertical-align:top}
-    th{background:#f8fafc;color:#64748b}
-    .badge{border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700;display:inline-block}
-    .green{background:#dcfce7;color:#166534}.amber{background:#fef3c7;color:#92400e}.blue{background:#dbeafe;color:#1d4ed8}.red{background:#fee2e2;color:#991b1b}.slate{background:#f1f5f9;color:#475569}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-    @media(max-width:950px){.login{grid-template-columns:1fr}.hero{display:none}.layout.on{display:block}aside{width:auto;height:auto;position:relative}.stats,.two,.formgrid{grid-template-columns:1fr}.content{padding:16px}.headerrow{display:block}}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>إنجاد - نسخة عرض</title>
+
+<style>
+body{margin:0;font-family:Tahoma;background:#f5f7fb}
+.login{display:flex;height:100vh}
+.box{margin:auto;background:#fff;padding:30px;border-radius:15px;width:320px;text-align:center}
+button{padding:10px;border:0;background:#dc2626;color:#fff;border-radius:8px;width:100%;cursor:pointer}
+.app{display:none}
+.top{background:#111;color:#fff;padding:15px}
+.content{padding:20px}
+.card{background:#fff;padding:15px;border-radius:10px;margin-bottom:15px}
+</style>
 </head>
+
 <body>
 
-<section id="login" class="login">
-  <div class="hero">
-    <div>
-      <img src="https://pbs.twimg.com/profile_images/1410198893330456576/nROxN9wG_400x400.jpg" alt="شعار إنجاد" onerror="this.style.display='none'">
-      <h2>جمعية إنجاد للبحث والإنقاذ</h2>
-      <p>بوابة مباشرة الحالات الإسعافية - نسخة عرض</p>
-    </div>
-    <div>
-      <h1>نسخة عرض تجريبية لمتابعة مباشرات الحجاج والمعتمرين.</h1>
-      <p>تسجيل محلي بدون Firebase، مناسبة لإرسال الرابط للاطلاع فقط.</p>
-    </div>
-    <p>رمز الدخول التجريبي: 1234</p>
+<div id="login" class="login">
+  <div class="box">
+    <h2>تسجيل الدخول</h2>
+    <select id="user" style="width:100%;padding:10px;margin:10px 0"></select>
+    <input id="pin" value="1234" style="width:100%;padding:10px;margin-bottom:10px">
+    <button onclick="login()">دخول</button>
   </div>
-  <div class="loginbox">
-    <div class="card" style="width:100%;max-width:460px">
-      <h2>تسجيل الدخول</h2>
-      <p class="small">اختر حساب عرض ثم أدخل الرمز التجريبي.</p>
-      <label>حساب العرض
-        <select id="loginUser"></select>
-      </label>
-      <label style="margin-top:12px">رمز الدخول
-        <input id="loginPin" placeholder="1234" value="1234">
-      </label>
-      <button class="primary" style="width:100%;margin-top:18px" onclick="login()">دخول</button>
-      <div class="alert ok">
-        <b>الحسابات:</b><br>
-        فيصل العسيري — مسعف ميداني<br>
-        علي المطيري — مشرف عمليات<br>
-        مدير النظام — مدير النظام
-      </div>
+</div>
+
+<div id="app" class="app">
+  <div class="top">
+    <span id="name"></span>
+    <button onclick="logout()" style="float:left;background:#444">خروج</button>
+  </div>
+
+  <div class="content">
+    <div class="card">
+      <h3>الرئيسية</h3>
+      <p>عدد المباشرات: <b id="count"></b></p>
+    </div>
+
+    <div class="card">
+      <h3>إضافة حالة</h3>
+      <input id="case" placeholder="نوع الحالة" style="width:100%;padding:10px">
+      <button onclick="add()">حفظ</button>
+    </div>
+
+    <div class="card">
+      <h3>السجل</h3>
+      <div id="list"></div>
     </div>
   </div>
-</section>
-
-<section id="app" class="layout">
-  <aside>
-    <div class="brand">
-      <img src="https://pbs.twimg.com/profile_images/1410198893330456576/nROxN9wG_400x400.jpg" alt="شعار إنجاد" onerror="this.style.display='none'">
-      <h3>جمعية إنجاد للبحث والإنقاذ</h3>
-      <p>بوابة مباشرة الحالات الإسعافية - نسخة عرض</p>
-    </div>
-    <div class="userbox">
-      <b id="currentName"></b>
-      <p id="currentRole"></p>
-      <p id="currentScope"></p>
-      <button class="outline" style="width:100%;margin-top:8px" onclick="logout()">تسجيل خروج</button>
-    </div>
-    <div class="nav" id="nav"></div>
-  </aside>
-
-  <main>
-    <header>
-      <div class="headerrow">
-        <div>
-          <h2 id="title" style="margin:0">الرئيسية</h2>
-          <p class="small">متابعة موسم الحج والعمرة</p>
-        </div>
-        <button class="primary" onclick="showPage('new')">+ مباشرة حالة</button>
-      </div>
-    </header>
-    <div class="content">
-      <div id="dashboard" class="page active"></div>
-      <div id="new" class="page"></div>
-      <div id="incidents" class="page"></div>
-      <div id="reports" class="page"></div>
-      <div id="users" class="page"></div>
-      <div id="security" class="page"></div>
-    </div>
-  </main>
-</section>
+</div>
 
 <script>
-const roles = {
-  "مسعف ميداني": ["dashboard","new","incidents"],
-  "مشرف عمليات": ["dashboard","new","incidents","reports","users"],
-  "مدير النظام": ["dashboard","new","incidents","reports","users","security"]
-};
-
-const pages = {
-  dashboard:"الرئيسية",
-  new:"مباشرة حالة",
-  incidents:"سجل المباشرات",
-  reports:"إحصائيات الموسم",
-  users:"المستخدمون والصلاحيات",
-  security:"الأمان والصلاحيات"
-};
-
-const users = [
-  {id:1,name:"فيصل العسيري",mobile:"0500000001",role:"مسعف ميداني",city:"مكة المكرمة",team:"فريق الحرم 1",status:"نشط"},
-  {id:2,name:"علي المطيري",mobile:"0500000002",role:"مشرف عمليات",city:"الكل",team:"العمليات",status:"نشط"},
-  {id:3,name:"مدير النظام",mobile:"0500000003",role:"مدير النظام",city:"الكل",team:"الإدارة",status:"نشط"}
+const users=[
+{name:"فيصل",role:"مسعف"},
+{name:"علي",role:"مشرف"},
+{name:"مدير",role:"مدير"}
 ];
 
-let incidents = JSON.parse(localStorage.getItem("demo_incidents") || "null") || [
-  {id:"HAJJ-1447-0001",source:"بلاغ محال من الهلال الأحمر",rc:"997-12345",city:"مكة المكرمة",location:"المسجد الحرام - الساحة الشرقية",type:"إجهاد حراري",severity:"متوسط",patientCount:1,status:"قيد المراجعة",createdBy:"فيصل العسيري",team:"فريق الحرم 1",time:"10:42",notes:"تم التبريد وتسليم الحالة للهلال الأحمر",beneficiary:{type:"حاج",gender:"ذكر",triage:"متوسط"}},
-  {id:"HAJJ-1447-0002",source:"مباشرة ذاتية من الفريق",rc:"",city:"المدينة المنورة",location:"المسجد النبوي - باب السلام",type:"إغماء",severity:"بسيط",patientCount:1,status:"مغلق",createdBy:"علي المطيري",team:"العمليات",time:"09:15",notes:"علاج بالموقع",beneficiary:{type:"معتمر",gender:"غير محدد",triage:"بسيط"}}
-];
+let data=JSON.parse(localStorage.getItem("cases")||"[]");
+let current=null;
 
-let departments = ["العمليات","الإسعاف الميداني","الإحصائيات","إدارة المتطوعين","الدعم اللوجستي"];
-let cities = ["مكة المكرمة","المدينة المنورة"];
-let sites = [
-  {city:"مكة المكرمة",name:"المسجد الحرام"},
-  {city:"مكة المكرمة",name:"منى"},
-  {city:"مكة المكرمة",name:"عرفات"},
-  {city:"المدينة المنورة",name:"المسجد النبوي"},
-  {city:"المدينة المنورة",name:"محطة نقل"}
-];
-let auditLogs = [];
-let currentUser = null;
-
-function save(){localStorage.setItem("demo_incidents", JSON.stringify(incidents));}
-function initLogin(){
-  document.getElementById("loginUser").innerHTML = users.map(u=>`<option value="${u.id}">${u.name} — ${u.role}</option>`).join("");
+function init(){
+  document.getElementById("user").innerHTML=
+    users.map((u,i)=>`<option value="${i}">${u.name} - ${u.role}</option>`).join("");
 }
+init();
+
 function login(){
-  if(document.getElementById("loginPin").value.trim() !== "1234"){alert("رمز الدخول غير صحيح");return}
-  currentUser = users.find(u => String(u.id) === document.getElementById("loginUser").value);
+  if(document.getElementById("pin").value!=="1234") return alert("خطأ");
+  current=users[document.getElementById("user").value];
   document.getElementById("login").style.display="none";
-  document.getElementById("app").classList.add("on");
-  document.getElementById("currentName").innerText=currentUser.name;
-  document.getElementById("currentRole").innerText=currentUser.role;
-  document.getElementById("currentScope").innerText=currentUser.city+" — "+currentUser.team;
-  buildNav();
-  renderAll();
-  showPage("dashboard");
+  document.getElementById("app").style.display="block";
+  document.getElementById("name").innerText=current.name;
+  render();
 }
+
 function logout(){location.reload()}
-function allowed(page){return roles[currentUser.role].includes(page)}
-function buildNav(){
-  const nav=document.getElementById("nav"); nav.innerHTML="";
-  Object.entries(pages).forEach(([key,label])=>{
-    if(allowed(key)){
-      const b=document.createElement("button");
-      b.id="nav_"+key; b.innerText=label; b.onclick=()=>showPage(key);
-      nav.appendChild(b);
-    }
-  });
-}
-function showPage(id){
-  if(!allowed(id)){alert("لا تملك صلاحية الوصول لهذه الصفحة");return}
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
-  const navBtn=document.getElementById("nav_"+id); if(navBtn) navBtn.classList.add("active");
-  document.getElementById("title").innerText=pages[id];
-  renderAll();
-}
-function visibleIncidents(){
-  if(["مشرف عمليات","مدير النظام"].includes(currentUser.role)) return incidents;
-  return incidents.filter(i=>i.createdBy===currentUser.name);
-}
-function badge(status){
-  const cls=status==="مغلق"?"green":status==="قيد المراجعة"?"amber":"blue";
-  return `<span class="badge ${cls}">${status}</span>`;
-}
-function nextId(){
-  const max = incidents.map(i=>Number(String(i.id).split("-").pop())||0).reduce((a,b)=>Math.max(a,b),0)+1;
-  return "HAJJ-1447-"+String(max).padStart(4,"0");
-}
-function renderDashboard(){
-  const list=visibleIncidents();
-  const closed=list.filter(i=>i.status==="مغلق").length;
-  const patients=list.reduce((s,i)=>s+Number(i.patientCount||0),0);
-  document.getElementById("dashboard").innerHTML=`
-    <div class="grid stats">
-      <div class="card stat"><p>مباشرات اليوم</p><div class="num">${list.length}</div><small>حسب الصلاحية</small></div>
-      <div class="card stat"><p>عدد الحجاج/المعتمرين</p><div class="num">${patients}</div><small>إجمالي الحالات</small></div>
-      <div class="card stat"><p>بلاغات الهلال الأحمر</p><div class="num">${list.filter(i=>i.source.includes("الهلال")).length}</div><small>محالة رسميًا</small></div>
-      <div class="card stat"><p>مباشرات مغلقة</p><div class="num">${closed}</div><small>${list.length-closed} قيد المتابعة</small></div>
-    </div><br>
-    <div class="grid two">
-      <div class="card">
-        <h3>آخر المباشرات</h3>
-        <table>
-          <tr><th>رقم المباشرة</th><th>المصدر</th><th>المدينة</th><th>الموقع</th><th>الحالة</th></tr>
-          ${list.slice().reverse().map(i=>`<tr><td>${i.id}</td><td>${i.source}</td><td>${i.city}</td><td>${i.location}</td><td>${badge(i.status)}</td></tr>`).join("")}
-        </table>
-      </div>
-      <div class="card">
-        <h3>تنبيهات العرض</h3>
-        <div class="alert warn">هذه نسخة محلية للعرض فقط، البيانات تحفظ على متصفح الزائر.</div>
-        <div class="alert ok">حساب المشرف يرى كل المباشرات والتقارير.</div>
-      </div>
-    </div>`;
-}
-function renderNew(){
-  const siteOptions = sites.map(s=>`<option>${s.name}</option>`).join("");
-  document.getElementById("new").innerHTML=`
-  <div class="card">
-    <h3>تسجيل مباشرة حالة إسعافية</h3>
-    <div class="grid formgrid">
-      <label>مصدر البلاغ<select id="source"><option>مباشرة ذاتية من الفريق</option><option>بلاغ محال من الهلال الأحمر</option><option>نقطة فرز/مركز تطوعي</option></select></label>
-      <label>رقم بلاغ الهلال إن وجد<input id="rc" placeholder="997-12345"></label>
-      <label>المدينة<select id="city">${cities.map(c=>`<option>${c}</option>`).join("")}</select></label>
-      <label>الموقع<select id="locationSelect">${siteOptions}<option>أخرى</option></select></label>
-      <label>وصف الموقع<input id="locationDetail" placeholder="باب الملك عبدالعزيز / الساحة الشرقية"></label>
-      <label>نوع الحالة<select id="type"><option>إجهاد حراري</option><option>ضربة حرارية</option><option>إغماء</option><option>ضيق تنفس</option><option>ألم صدر</option><option>هبوط سكر</option><option>إصابة قدم/إجهاد مشي</option></select></label>
-      <label>درجة الحالة<select id="severity"><option>بسيط</option><option>متوسط</option><option>حرج</option><option>وفاة</option></select></label>
-      <label>عدد المستفيدين<input id="patientCount" type="number" value="1"></label>
-    </div>
-    <label style="margin-top:14px">وصف الحالة<textarea id="notes"></textarea></label>
 
-    <div class="card" style="margin-top:16px">
-      <h3>بيانات المستفيد رقم 1</h3>
-      <p class="small">لا يتم إدخال الاسم أو رقم الجواز أو الهوية إلا عند الحاجة النظامية.</p>
-      <div class="grid formgrid">
-        <label>صفة المستفيد<select id="beneficiaryType"><option>حاج</option><option>معتمر</option><option>زائر</option><option>عامل/منظم</option></select></label>
-        <label>الجنس<select id="beneficiaryGender"><option>غير محدد</option><option>ذكر</option><option>أنثى</option></select></label>
-        <label>الجنسية<input id="beneficiaryNationality" placeholder="مثال: إندونيسي"></label>
-        <label>العمر التقريبي<input id="beneficiaryAge" placeholder="مثال: 65"></label>
-        <label>اللغة<input id="beneficiaryLanguage" placeholder="عربي / إنجليزي / أردو"></label>
-        <label>مستوى الوعي<select id="beneficiaryConsciousness"><option>واعي</option><option>يستجيب للصوت</option><option>يستجيب للألم</option><option>فاقد الوعي</option></select></label>
-        <label>تصنيف الحالة<select id="beneficiaryTriage"><option>بسيط</option><option>متوسط</option><option>حرج</option><option>وفاة</option></select></label>
-        <label>النبض<input id="beneficiaryPulse" placeholder="نبضة/دقيقة"></label>
-        <label>الضغط<input id="beneficiaryBP" placeholder="120/80"></label>
-        <label>نسبة الأكسجين<input id="beneficiarySpo2" placeholder="% SpO2"></label>
-        <label>السكر<input id="beneficiaryGlucose" placeholder="mg/dL"></label>
-      </div>
-    </div>
+function add(){
+  const val=document.getElementById("case").value;
+  if(!val) return;
+  data.push({text:val,user:current.name});
+  localStorage.setItem("cases",JSON.stringify(data));
+  document.getElementById("case").value="";
+  render();
+}
 
-    <div class="actions">
-      <button class="outline" onclick="saveIncident('مسودة')">حفظ كمسودة</button>
-      <button class="primary" onclick="saveIncident('قيد المراجعة')">إرسال للمراجعة</button>
-      ${["مشرف عمليات","مدير النظام"].includes(currentUser.role)?`<button class="success" onclick="saveIncident('مغلق')">حفظ وإغلاق</button>`:""}
-    </div>
-  </div>`;
+function render(){
+  document.getElementById("count").innerText=data.length;
+  document.getElementById("list").innerHTML=
+    data.map(i=>`<div>- ${i.text} (${i.user})</div>`).join("");
 }
-function saveIncident(status){
-  const id=nextId();
-  const loc = document.getElementById("locationSelect").value + " - " + document.getElementById("locationDetail").value;
-  incidents.push({
-    id,
-    source:document.getElementById("source").value,
-    rc:document.getElementById("rc").value,
-    city:document.getElementById("city").value,
-    location:loc,
-    type:document.getElementById("type").value,
-    severity:document.getElementById("severity").value,
-    patientCount:Number(document.getElementById("patientCount").value||1),
-    status,
-    createdBy:currentUser.name,
-    team:currentUser.team,
-    time:new Date().toLocaleTimeString("ar-SA",{hour:"2-digit",minute:"2-digit"}),
-    notes:document.getElementById("notes").value,
-    beneficiary:{
-      type:document.getElementById("beneficiaryType").value,
-      gender:document.getElementById("beneficiaryGender").value,
-      triage:document.getElementById("beneficiaryTriage").value
-    }
-  });
-  save();
-  alert("تم حفظ المباشرة: "+id);
-  showPage("incidents");
-}
-function approveIncident(id){const i=incidents.find(x=>x.id===id); if(i){i.status="مغلق";save();renderAll();}}
-function deleteIncident(id){
-  if(currentUser.role!=="مدير النظام"){alert("الحذف لمدير النظام فقط");return}
-  if(confirm("حذف المباشرة؟")){incidents=incidents.filter(i=>i.id!==id);save();renderAll();}
-}
-function renderIncidents(){
-  const list=visibleIncidents();
-  document.getElementById("incidents").innerHTML=`
-  <div class="card">
-    <h3>سجل المباشرات</h3>
-    <table>
-      <tr><th>رقم المباشرة</th><th>المصدر</th><th>المدينة</th><th>نوع الحالة</th><th>الموقع</th><th>الفريق</th><th>الحالة</th><th>إجراء</th></tr>
-      ${list.slice().reverse().map(i=>`<tr>
-        <td>${i.id}<br><span class="small">${i.time}</span></td>
-        <td>${i.source}<br><span class="small">${i.rc || "لا يوجد"}</span></td>
-        <td>${i.city}</td>
-        <td>${i.type}<br><span class="small">${i.patientCount} حالة</span></td>
-        <td>${i.location}</td>
-        <td>${i.team}<br><span class="small">${i.createdBy}</span></td>
-        <td>${badge(i.status)}</td>
-        <td>
-          ${["مشرف عمليات","مدير النظام"].includes(currentUser.role)&&i.status!=="مغلق"?`<button class="success" onclick="approveIncident('${i.id}')">اعتماد</button>`:""}
-          ${currentUser.role==="مدير النظام"?`<button class="danger" onclick="deleteIncident('${i.id}')">حذف</button>`:""}
-        </td>
-      </tr>`).join("")}
-    </table>
-  </div>`;
-}
-function renderReports(){
-  const list=visibleIncidents();
-  const heat=list.filter(i=>i.type.includes("حراري")).length;
-  document.getElementById("reports").innerHTML=`
-    <div class="grid stats">
-      <div class="card stat"><p>إجهاد/ضربات حرارية</p><div class="num">${heat}</div><small>مؤشر الموسم</small></div>
-      <div class="card stat"><p>بلاغات الهلال</p><div class="num">${list.filter(i=>i.source.includes("الهلال")).length}</div><small>محالة رسميًا</small></div>
-      <div class="card stat"><p>مباشرات ذاتية</p><div class="num">${list.filter(i=>i.source.includes("ذاتية")).length}</div><small>من الفرق</small></div>
-      <div class="card stat"><p>إجمالي الحالات</p><div class="num">${list.reduce((s,i)=>s+Number(i.patientCount||0),0)}</div><small>إحصائي فقط</small></div>
-    </div><br>
-    <div class="card"><h3>توزيع حسب المدينة</h3>
-    <table><tr><th>المدينة</th><th>العدد</th></tr>
-      ${cities.map(c=>`<tr><td>${c}</td><td>${list.filter(i=>i.city===c).length}</td></tr>`).join("")}
-    </table></div>`;
-}
-function renderUsers(){
-  document.getElementById("users").innerHTML=`
-  <div class="card">
-    <h3>المستخدمون والصلاحيات</h3>
-    <table>
-      <tr><th>الاسم</th><th>الجوال</th><th>الدور</th><th>المدينة</th><th>الفريق</th><th>الحالة</th></tr>
-      ${users.map(u=>`<tr><td>${u.name}</td><td>${u.mobile}</td><td>${u.role}</td><td>${u.city}</td><td>${u.team}</td><td><span class="badge green">${u.status}</span></td></tr>`).join("")}
-    </table>
-  </div>`;
-}
-function renderSecurity(){
-  document.getElementById("security").innerHTML=`
-  <div class="grid two">
-    <div class="card">
-      <h3>إدارة الأقسام والمدن والمواقع</h3>
-      <h4>الأقسام</h4><p>${departments.map(d=>`<span class="badge slate">${d}</span>`).join(" ")}</p>
-      <h4>المدن</h4><p>${cities.map(c=>`<span class="badge blue">${c}</span>`).join(" ")}</p>
-      <h4>المواقع</h4><p>${sites.map(s=>`<span class="badge green">${s.city}: ${s.name}</span>`).join(" ")}</p>
-    </div>
-    <div class="card">
-      <h3>سجل تتبع الحسابات</h3>
-      <table><tr><th>العملية</th><th>الحالة</th></tr>
-      <tr><td>تسجيل دخول</td><td>${currentUser.name}</td></tr>
-      <tr><td>نوع النسخة</td><td>محلية للعرض</td></tr>
-      </table>
-    </div>
-  </div>`;
-}
-function renderAll(){
-  renderDashboard();
-  if(allowed("new")) renderNew();
-  if(allowed("incidents")) renderIncidents();
-  if(allowed("reports")) renderReports();
-  if(allowed("users")) renderUsers();
-  if(allowed("security")) renderSecurity();
-}
-initLogin();
 </script>
+
 </body>
 </html>
