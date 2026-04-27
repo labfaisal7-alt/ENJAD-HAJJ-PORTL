@@ -1,55 +1,136 @@
 <!doctype html>
+
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>إنجاد - نسخة عرض</title>
+<title>إنجاد</title>
 
 <style>
-body{margin:0;font-family:Tahoma;background:#f5f7fb}
-.login{display:flex;height:100vh}
-.box{margin:auto;background:#fff;padding:30px;border-radius:15px;width:320px;text-align:center}
-button{padding:10px;border:0;background:#dc2626;color:#fff;border-radius:8px;width:100%;cursor:pointer}
+body{
+  margin:0;
+  font-family:Tahoma;
+  background:#f3f4f6;
+}
+
+/* تسجيل الدخول */
+.login{
+  display:flex;
+  height:100vh;
+}
+.box{
+  margin:auto;
+  background:#fff;
+  padding:30px;
+  border-radius:15px;
+  width:320px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+input,select{
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border:1px solid #ddd;
+  border-radius:8px;
+}
+
+/* أزرار */
+button{
+  padding:10px;
+  border:0;
+  background:#dc2626;
+  color:#fff;
+  border-radius:8px;
+  width:100%;
+  cursor:pointer;
+  transition:.2s;
+}
+button:hover{opacity:.85}
+
+/* التطبيق */
 .app{display:none}
-.top{background:#111;color:#fff;padding:15px}
-.content{padding:20px}
-.card{background:#fff;padding:15px;border-radius:10px;margin-bottom:15px}
+
+.top{
+  background:#111;
+  color:#fff;
+  padding:15px;
+  font-size:14px;
+}
+
+.top button{
+  float:left;
+  width:auto;
+  padding:5px 10px;
+  background:#444;
+}
+
+.content{
+  padding:20px;
+  max-width:600px;
+  margin:auto;
+}
+
+.card{
+  background:#fff;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:15px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* السجل */
+.item{
+  padding:8px;
+  border-bottom:1px solid #eee;
+  font-size:14px;
+}
 </style>
+
 </head>
 
 <body>
 
+<!-- تسجيل الدخول -->
+
 <div id="login" class="login">
   <div class="box">
     <h2>تسجيل الدخول</h2>
-    <select id="user" style="width:100%;padding:10px;margin:10px 0"></select>
-    <input id="pin" value="1234" style="width:100%;padding:10px;margin-bottom:10px">
+    <select id="user"></select>
+    <input id="pin" type="password" placeholder="الرقم السري" value="1234">
     <button onclick="login()">دخول</button>
   </div>
 </div>
 
+<!-- التطبيق -->
+
 <div id="app" class="app">
   <div class="top">
     <span id="name"></span>
-    <button onclick="logout()" style="float:left;background:#444">خروج</button>
+    <button onclick="logout()">خروج</button>
   </div>
 
   <div class="content">
-    <div class="card">
-      <h3>الرئيسية</h3>
-      <p>عدد المباشرات: <b id="count"></b></p>
-    </div>
 
-    <div class="card">
-      <h3>إضافة حالة</h3>
-      <input id="case" placeholder="نوع الحالة" style="width:100%;padding:10px">
-      <button onclick="add()">حفظ</button>
-    </div>
+```
+<div class="card">
+  <h3>الرئيسية</h3>
+  <p>عدد الحالات: <b id="count">0</b></p>
+</div>
 
-    <div class="card">
-      <h3>السجل</h3>
-      <div id="list"></div>
-    </div>
+<div class="card">
+  <h3>إضافة حالة</h3>
+  <input id="case" placeholder="اكتب نوع الحالة...">
+  <button onclick="add()">حفظ</button>
+</div>
+
+<div class="card">
+  <h3>السجل</h3>
+  <div id="list"></div>
+</div>
+```
+
   </div>
 </div>
 
@@ -63,36 +144,70 @@ const users=[
 let data=JSON.parse(localStorage.getItem("cases")||"[]");
 let current=null;
 
+/* تحميل المستخدمين */
 function init(){
   document.getElementById("user").innerHTML=
     users.map((u,i)=>`<option value="${i}">${u.name} - ${u.role}</option>`).join("");
 }
 init();
 
+/* تسجيل دخول */
 function login(){
-  if(document.getElementById("pin").value!=="1234") return alert("خطأ");
+  const pin=document.getElementById("pin").value;
+
+  if(pin!=="1234"){
+    alert("❌ الرقم السري غير صحيح");
+    return;
+  }
+
   current=users[document.getElementById("user").value];
+
   document.getElementById("login").style.display="none";
   document.getElementById("app").style.display="block";
-  document.getElementById("name").innerText=current.name;
+
+  document.getElementById("name").innerText=
+    current.name+" ("+current.role+")";
+
   render();
 }
 
-function logout(){location.reload()}
+/* خروج */
+function logout(){
+  location.reload();
+}
 
+/* إضافة حالة */
 function add(){
-  const val=document.getElementById("case").value;
-  if(!val) return;
-  data.push({text:val,user:current.name});
+  const val=document.getElementById("case").value.trim();
+
+  if(!val){
+    alert("اكتب الحالة أولاً");
+    return;
+  }
+
+  data.unshift({
+    text:val,
+    user:current.name,
+    time:new Date().toLocaleString()
+  });
+
   localStorage.setItem("cases",JSON.stringify(data));
+
   document.getElementById("case").value="";
   render();
 }
 
+/* عرض البيانات */
 function render(){
   document.getElementById("count").innerText=data.length;
+
   document.getElementById("list").innerHTML=
-    data.map(i=>`<div>- ${i.text} (${i.user})</div>`).join("");
+    data.map(i=>`
+      <div class="item">
+        <b>${i.text}</b><br>
+        👤 ${i.user} | ⏱ ${i.time}
+      </div>
+    `).join("");
 }
 </script>
 
