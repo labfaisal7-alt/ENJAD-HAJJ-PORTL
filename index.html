@@ -40,7 +40,7 @@
     .badge{border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700;display:inline-block}
     .green{background:#dcfce7;color:#166534}.amber{background:#fef3c7;color:#92400e}.blue{background:#dbeafe;color:#1d4ed8}.slate{background:#f1f5f9;color:#475569}.red{background:#fee2e2;color:#991b1b}
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-    .small{font-size:12px;color:#64748b}.hidden{display:none!important}.firebase-status{font-size:12px;margin-top:8px;padding:8px 10px;border-radius:14px;background:#ecfeff;color:#155e75}.firebase-off{background:#fef3c7;color:#92400e}
+    .small{font-size:12px;color:#64748b}.hidden{display:none!important}
     .alert{padding:12px 14px;border-radius:18px;margin:12px 0;font-size:14px}
     .ok{background:#dcfce7;color:#166534}.warn{background:#fef3c7;color:#92400e}
     @media(max-width:950px){.login{grid-template-columns:1fr}.hero{display:none}.layout.on{display:block}aside{width:auto;height:auto;position:relative}.stats,.two,.formgrid{grid-template-columns:1fr}.content{padding:16px}.headerrow{display:block}}
@@ -72,7 +72,7 @@
         <input id="loginPin" placeholder="1234" value="1234">
       </label>
       <button class="primary" style="width:100%;margin-top:18px" onclick="login()">دخول</button>
-      <div class="alert warn">الرمز التجريبي لكل الحسابات: 1234 — تم إصلاح اختيار المستخدم — إذا ظهرت أسماء قديمة اضغط من حساب مدير النظام: مسح البيانات التجريبية</div>
+      <div class="alert warn">الرمز التجريبي لكل الحسابات: 1234 — إذا ظهرت أسماء قديمة اضغط من حساب مدير النظام: مسح البيانات التجريبية</div>
     </div>
   </div>
 </section>
@@ -88,7 +88,6 @@
       <b id="currentName"></b>
       <p id="currentRole"></p>
       <p id="currentScope"></p>
-      <div id="firebaseStatus" class="firebase-status">Firebase: جاري التحقق...</div>
       <button class="outline" style="width:100%;margin-top:8px" onclick="logout()">تسجيل خروج</button>
     </div>
     <div class="nav" id="nav"></div>
@@ -113,56 +112,6 @@
     </div>
   </main>
 </section>
-
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-  import {
-    getFirestore,
-    collection,
-    doc,
-    getDocs,
-    setDoc,
-    addDoc,
-    deleteDoc,
-    updateDoc,
-    serverTimestamp,
-    query,
-    orderBy,
-    limit,
-    runTransaction
-  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCjJKdqU6IMzE4kFcxb-E5Z0mqxlncUVRQ",
-    authDomain: "enjad-emergence.firebaseapp.com",
-    projectId: "enjad-emergence",
-    storageBucket: "enjad-emergence.firebasestorage.app",
-    messagingSenderId: "328879103448",
-    appId: "1:328879103448:web:5bab51ce79050ee3faa6ad",
-    measurementId: "G-FFDGMMBWBG"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  window.firebaseReady = true;
-  window.enjadDb = db;
-  window.enjadFirebase = {
-    collection,
-    doc,
-    getDocs,
-    setDoc,
-    addDoc,
-    deleteDoc,
-    updateDoc,
-    serverTimestamp,
-    query,
-    orderBy,
-    limit,
-    runTransaction
-  };
-</script>
 
 <script>
 const roles = {
@@ -223,11 +172,6 @@ function addAudit(action, details){
   });
   auditLogs = auditLogs.slice(0, 200);
   localStorage.setItem("enjad_audit_logs", JSON.stringify(auditLogs));
-  if(firebaseMode && window.enjadDb && window.enjadFirebase){
-    const { doc, setDoc } = window.enjadFirebase;
-    const id = (auditLogs[0].time + "_" + auditLogs[0].user + "_" + auditLogs[0].action).replace(/[^\u0600-\u06FFa-zA-Z0-9_ -]/g, "_");
-    setDoc(doc(window.enjadDb, "auditLogs", id), auditLogs[0], { merge:true }).catch(console.error);
-  }
 }
 
 let incidents = JSON.parse(localStorage.getItem("hajj_incidents") || "null") || [
@@ -236,24 +180,9 @@ let incidents = JSON.parse(localStorage.getItem("hajj_incidents") || "null") || 
 ];
 
 let currentUser = null;
-let firebaseMode = true;
-let firebaseLoaded = false;
 
-async function getNextIncidentNumber(){
+function getNextIncidentNumber(){
   const yearCode = "1447";
-  if(firebaseMode && window.enjadDb && window.enjadFirebase){
-    const { doc, runTransaction } = window.enjadFirebase;
-    const counterRef = doc(window.enjadDb, "counters", "incidentSequence");
-    const next = await runTransaction(window.enjadDb, async (transaction) => {
-      const snap = await transaction.get(counterRef);
-      const current = snap.exists() ? Number(snap.data().value || 0) + 1 : 1;
-      transaction.set(counterRef, { value: current, updatedAt: new Date().toISOString() }, { merge: true });
-      return current;
-    });
-    localStorage.setItem("hajj_incident_sequence", String(next));
-    return "HAJJ-" + yearCode + "-" + String(next).padStart(4, "0");
-  }
-
   const current = Number(localStorage.getItem("hajj_incident_sequence") || "0") + 1;
   localStorage.setItem("hajj_incident_sequence", String(current));
   return "HAJJ-" + yearCode + "-" + String(current).padStart(4, "0");
@@ -270,103 +199,13 @@ function syncIncidentSequence(){
   if(maxExisting > saved) localStorage.setItem("hajj_incident_sequence", String(maxExisting));
 }
 
-async function save(){
+function save(){
   localStorage.setItem("hajj_users", JSON.stringify(users));
   localStorage.setItem("hajj_incidents", JSON.stringify(incidents));
   localStorage.setItem("enjad_departments", JSON.stringify(departments));
   localStorage.setItem("enjad_cities", JSON.stringify(cities));
   localStorage.setItem("enjad_sites", JSON.stringify(sites));
   localStorage.setItem("enjad_audit_logs", JSON.stringify(auditLogs));
-
-  if(firebaseMode && window.enjadDb && window.enjadFirebase){
-    await pushCoreDataToFirebase();
-  }
-}
-
-async function pushCoreDataToFirebase(){
-  const { doc, setDoc } = window.enjadFirebase;
-  const db = window.enjadDb;
-  await setDoc(doc(db, "settings", "core"), {
-    departments,
-    cities,
-    sites,
-    updatedAt: new Date().toISOString()
-  }, { merge: true });
-
-  for(const user of users){
-    await setDoc(doc(db, "users", String(user.id)), user, { merge: true });
-  }
-
-  for(const incident of incidents){
-    await setDoc(doc(db, "incidents", String(incident.id)), {
-      ...incident,
-      updatedAt: new Date().toISOString()
-    }, { merge: true });
-  }
-
-  for(const log of auditLogs.slice(0, 20)){
-    const id = (log.time + "_" + log.user + "_" + log.action).replace(/[^\u0600-\u06FFa-zA-Z0-9_ -]/g, "_");
-    await setDoc(doc(db, "auditLogs", id), log, { merge: true });
-  }
-}
-
-async function loadFromFirebase(){
-  if(!window.enjadDb || !window.enjadFirebase){
-    firebaseLoaded = false;
-    return;
-  }
-
-  try{
-    const { collection, doc, getDocs } = window.enjadFirebase;
-    const db = window.enjadDb;
-
-    const usersSnap = await getDocs(collection(db, "users"));
-    if(!usersSnap.empty){
-      users = usersSnap.docs.map(d => d.data());
-    } else {
-      for(const user of users){
-        await window.enjadFirebase.setDoc(doc(db, "users", String(user.id)), user, { merge:true });
-      }
-    }
-
-    const incidentsSnap = await getDocs(collection(db, "incidents"));
-    if(!incidentsSnap.empty){
-      incidents = incidentsSnap.docs.map(d => d.data()).sort((a,b) => String(a.id).localeCompare(String(b.id)));
-    } else {
-      for(const incident of incidents){
-        await window.enjadFirebase.setDoc(doc(db, "incidents", String(incident.id)), incident, { merge:true });
-      }
-    }
-
-    const coreSnap = await getDocs(collection(db, "settings"));
-    const coreDoc = coreSnap.docs.find(d => d.id === "core");
-    if(coreDoc){
-      const core = coreDoc.data();
-      departments = core.departments || departments;
-      cities = core.cities || cities;
-      sites = core.sites || sites;
-    } else {
-      await window.enjadFirebase.setDoc(doc(db, "settings", "core"), { departments, cities, sites }, { merge:true });
-    }
-
-    const logsSnap = await getDocs(collection(db, "auditLogs"));
-    if(!logsSnap.empty){
-      auditLogs = logsSnap.docs.map(d => d.data()).slice(0,200);
-    }
-
-    localStorage.setItem("hajj_users", JSON.stringify(users));
-    localStorage.setItem("hajj_incidents", JSON.stringify(incidents));
-    localStorage.setItem("enjad_departments", JSON.stringify(departments));
-    localStorage.setItem("enjad_cities", JSON.stringify(cities));
-    localStorage.setItem("enjad_sites", JSON.stringify(sites));
-    localStorage.setItem("enjad_audit_logs", JSON.stringify(auditLogs));
-
-    firebaseLoaded = true;
-  } catch(err){
-    firebaseLoaded = false;
-    console.error("Firebase load failed:", err);
-    alert("تعذر الاتصال بـ Firebase. تأكد من تفعيل Firestore وقواعد الوصول. سيتم استخدام التخزين المحلي مؤقتًا.");
-  }
 }
 
 function initLogin(){
@@ -374,35 +213,14 @@ function initLogin(){
   sel.innerHTML = users.filter(u=>u.status==="نشط").map(u=>`<option value="${u.id}">${u.name} — ${u.role} — ${u.city}</option>`).join("");
 }
 
-async function login(){
+function login(){
   if(document.getElementById("loginPin").value.trim() !== "1234"){alert("رمز الدخول غير صحيح");return}
-
-  const selectedUserId = document.getElementById("loginUser").value;
-  await loadFromFirebase();
-  initLogin();
-
-  const loginSelect = document.getElementById("loginUser");
-  if(users.some(u => String(u.id) === String(selectedUserId))){
-    loginSelect.value = selectedUserId;
-  }
-
-  currentUser = users.find(u=>String(u.id)===String(loginSelect.value));
-
-  if(!currentUser){
-    alert("تعذر تحديد المستخدم. جرّب تحديث الصفحة.");
-    return;
-  }
-
+  currentUser = users.find(u=>String(u.id)===document.getElementById("loginUser").value);
   document.getElementById("login").style.display="none";
   document.getElementById("app").classList.add("on");
   document.getElementById("currentName").innerText=currentUser.name;
   document.getElementById("currentRole").innerText=currentUser.role;
   document.getElementById("currentScope").innerText=currentUser.city+" — "+currentUser.team;
-  const fb = document.getElementById("firebaseStatus");
-  if(fb){
-    fb.innerText = firebaseLoaded ? "Firebase: متصل" : "Firebase: محلي مؤقت";
-    fb.className = firebaseLoaded ? "firebase-status" : "firebase-status firebase-off";
-  }
   addAudit("تسجيل دخول", "دخول المستخدم إلى البوابة");
   buildNav();
   renderAll();
@@ -579,8 +397,8 @@ function toggleRcField(){
   }
 }
 
-async function saveIncident(status){
-  const id = await getNextIncidentNumber();
+function saveIncident(status){
+  const id = getNextIncidentNumber();
   const seasonal = document.getElementById("seasonLocation").value;
   const detail = document.getElementById("location").value.trim();
   incidents.push({
@@ -615,7 +433,7 @@ async function saveIncident(status){
     }
   });
   addAudit("حفظ مباشرة", "تم حفظ المباشرة رقم " + id + " بحالة: " + status);
-  await save();
+  save();
   alert("تم حفظ المباشرة: " + id);
   showPage("incidents");
 }
@@ -758,7 +576,6 @@ function renderSecurity(){
       <h3>إدارة البيانات التجريبية</h3>
       <p class="small">يمسح البيانات المحفوظة محليًا في المتصفح فقط.</p>
       <p class="small">آخر رقم تسلسلي محفوظ: <b id="seqView"></b></p>
-      <button class="outline" onclick="loadFromFirebase().then(()=>{renderAll();alert('تم تحديث البيانات من Firebase')})">تحديث من Firebase</button>
       <button class="danger" onclick="if(confirm('مسح كل البيانات التجريبية؟')){addAudit('مسح البيانات التجريبية','تم طلب مسح البيانات المحلية');localStorage.removeItem('hajj_users');localStorage.removeItem('hajj_incidents');localStorage.removeItem('hajj_incident_sequence');localStorage.removeItem('enjad_departments');localStorage.removeItem('enjad_cities');localStorage.removeItem('enjad_sites');location.reload()}">مسح البيانات التجريبية</button>
     </div>
   </div>
